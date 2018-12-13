@@ -1,0 +1,51 @@
+<?php
+/* X-filter: A filter for Internet advertisements
+*  (c) 2017 X-filter, LLC (https://x-filter.net)
+*  Network-wide ad blocking via your own hardware.
+*
+*  This file is copyright under the latest version of the EUPL.
+*  Please see LICENSE file for your rights under this license. */
+require_once('auth.php');
+
+$type = $_POST['list'];
+
+// Perform all of the verification for list editing
+// when NOT invoked and authenticated from API
+if (!$api) {
+    list_verify($type);
+}
+
+switch($type) {
+    case "white":
+        if(!isset($_POST["auditlog"]))
+            echo shell_exec("sudo xfilter -w ${_POST['domain']}");
+        else
+        {
+            echo shell_exec("sudo xfilter -w -n ${_POST['domain']}");
+            echo shell_exec("sudo xfilter -a audit ${_POST['domain']}");
+        }
+        break;
+    case "black":
+        if(!isset($_POST["auditlog"]))
+            echo shell_exec("sudo xfilter -b ${_POST['domain']}");
+        else
+        {
+            echo shell_exec("sudo xfilter -b -n ${_POST['domain']}");
+            echo shell_exec("sudo xfilter -a audit ${_POST['domain']}");
+        }
+        break;
+    case "wild":
+        // Escape "." so it won't be interpreted as the wildcard character
+        $domain = str_replace(".","\.",$_POST['domain']);
+        // Add regex filter for legacy wildcard behavior
+        add_regex("(^|\.)".$domain."$");
+        break;
+    case "regex":
+        add_regex($_POST['domain']);
+        break;
+    case "audit":
+        echo exec("sudo xfilter -a audit ${_POST['domain']}");
+        break;
+}
+
+?>

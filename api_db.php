@@ -1,6 +1,6 @@
 <?php
-/*   Pi-hole: A black hole for Internet advertisements
-*    (c) 2017 Pi-hole, LLC (https://pi-hole.net)
+/*   X-filter: A filter for Internet advertisements
+*    (c) 2017 X-filter, LLC (https://x-filter.net)
 *    Network-wide ad blocking via your own hardware.
 *
 *    This file is copyright under the latest version of the EUPL.
@@ -8,8 +8,8 @@
 
 $api = true;
 header('Content-type: application/json');
-require("scripts/pi-hole/php/password.php");
-require("scripts/pi-hole/php/auth.php");
+require("scripts/x-filter/php/password.php");
+require("scripts/x-filter/php/auth.php");
 check_cors();
 
 // Set maximum execution time to 10 minutes
@@ -49,14 +49,14 @@ function resolveHostname($clientip, $printIP)
 }
 
 // Get posible non-standard location of FTL's database
-$FTLsettings = parse_ini_file("/etc/pihole/pihole-FTL.conf");
+$FTLsettings = parse_ini_file("/etc/xfilter/xfilter-FTL.conf");
 if(isset($FTLsettings["DBFILE"]))
 {
 	$DBFILE = $FTLsettings["DBFILE"];
 }
 else
 {
-	$DBFILE = "/etc/pihole/pihole-FTL.db";
+	$DBFILE = "/etc/xfilter/xfilter-FTL.db";
 }
 
 // Needs package php5-sqlite, e.g.
@@ -336,7 +336,7 @@ if (isset($_GET['getQueriesCount']) && $auth)
 
 if (isset($_GET['getDBfilesize']) && $auth)
 {
-	$filesize = filesize("/etc/pihole/pihole-FTL.db");
+	$filesize = filesize("/etc/xfilter/xfilter-FTL.db");
 	$result = array('filesize' => $filesize);
 	$data = array_merge($data, $result);
 }

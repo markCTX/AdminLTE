@@ -1,6 +1,6 @@
 <?php
-/*   Pi-hole: A black hole for Internet advertisements
-*    (c) 2017 Pi-hole, LLC (https://pi-hole.net)
+/*   X-filter: A filter for Internet advertisements
+*    (c) 2017 X-filter, LLC (https://x-filter.net)
 *    Network-wide ad blocking via your own hardware.
 *
 *    This file is copyright under the latest version of the EUPL.
@@ -31,7 +31,7 @@ else
 
 	if (isset($_GET['summary']) || isset($_GET['summaryRaw']) || !count($_GET))
 	{
-		require_once("scripts/pi-hole/php/gravity.php");
+		require_once("scripts/x-filter/php/gravity.php");
 		sendRequestFTL("stats");
 		$return = getResponseFTL();
 

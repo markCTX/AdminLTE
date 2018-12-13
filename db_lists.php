@@ -1,11 +1,11 @@
 <?php /*
-*    Pi-hole: A black hole for Internet advertisements
-*    (c) 2017 Pi-hole, LLC (https://pi-hole.net)
+*    X-filter: A filter for Internet advertisements
+*    (c) 2017 X-filter, LLC (https://x-filter.net)
 *    Network-wide ad blocking via your own hardware.
 *
 *    This file is copyright under the latest version of the EUPL.
 *    Please see LICENSE file for your rights under this license. */
-    require "scripts/pi-hole/php/header.php";
+    require "scripts/x-filter/php/header.php";
 
 // Generate CSRF token
 if(empty($_SESSION['token'])) {
@@ -19,7 +19,7 @@ $token = $_SESSION['token'];
 
 <!-- Title -->
 <div class="page-header">
-    <h1>Compute Top Lists from the Pi-hole query database</h1>
+    <h1>Compute Top Lists from the X-filter query database</h1>
 </div>
 
 
@@ -41,7 +41,7 @@ $token = $_SESSION['token'];
 </div>
 
 <div id="timeoutWarning" class="alert alert-warning alert-dismissible fade in" role="alert" hidden="true">
-    Depending on how large of a range you specified, the request may time out while Pi-hole tries to retrieve all the data.<br/><span id="err"></span>
+    Depending on how large of a range you specified, the request may time out while X-filter tries to retrieve all the data.<br/><span id="err"></span>
 </div>
 
 <?php
@@ -139,9 +139,9 @@ else
 </div>
 
 <?php
-    require "scripts/pi-hole/php/footer.php";
+    require "scripts/x-filter/php/footer.php";
 ?>
 
 <script src="scripts/vendor/moment.min.js"></script>
 <script src="scripts/vendor/daterangepicker.js"></script>
-<script src="scripts/pi-hole/js/db_lists.js"></script>
+<script src="scripts/x-filter/js/db_lists.js"></script>

@@ -1,6 +1,6 @@
 <?php
-/*   Pi-hole: A black hole for Internet advertisements
-*    (c) 2017 Pi-hole, LLC (https://pi-hole.net)
+/*   X-filter: A filter for Internet advertisements
+*    (c) 2017 X-filter, LLC (https://x-filter.net)
 *    Network-wide ad blocking via your own hardware.
 *
 *    This file is copyright under the latest version of the EUPL.
@@ -8,9 +8,9 @@
 
 $api = true;
 header('Content-type: application/json');
-require("scripts/pi-hole/php/FTL.php");
-require("scripts/pi-hole/php/password.php");
-require("scripts/pi-hole/php/auth.php");
+require("scripts/x-filter/php/FTL.php");
+require("scripts/x-filter/php/password.php");
+require("scripts/x-filter/php/auth.php");
 check_cors();
 
 $FTL_IP = "127.0.0.1";
@@ -20,7 +20,7 @@ $data = array();
 // Common API functions
 if (isset($_GET['status']))
 {
-	$pistatus = exec('sudo pihole status web');
+	$pistatus = exec('sudo xfilter status web');
 	if ($pistatus == "1")
 	{
 		$data = array_merge($data, array("status" => "enabled"));
@@ -42,7 +42,7 @@ elseif (isset($_GET['enable']) && $auth)
 		// Skip token validation if explicit auth string is given
 		check_csrf($_GET['token']);
 	}
-	exec('sudo pihole enable');
+	exec('sudo xfilter enable');
 	$data = array_merge($data, array("status" => "enabled"));
 	unlink("../custom_disable_timer");
 }
@@ -63,23 +63,23 @@ elseif (isset($_GET['disable']) && $auth)
 	if($disable > 0)
 	{
 		$timestamp = time();
-		exec("sudo pihole disable ".$disable."s");
+		exec("sudo xfilter disable ".$disable."s");
 		file_put_contents("../custom_disable_timer",($timestamp+$disable)*1000);
 	}
 	else
 	{
-		exec('sudo pihole disable');
+		exec('sudo xfilter disable');
 		unlink("../custom_disable_timer");
 	}
 	$data = array_merge($data, array("status" => "disabled"));
 }
 elseif (isset($_GET['versions']))
 {
-	// Determine if updates are available for Pi-hole
+	// Determine if updates are available for X-filter
 	// using the same script that we use for the footer
 	// on the dashboard (update notifications are
 	// suppressed if on development branches)
-	require "scripts/pi-hole/php/update_checker.php";
+	require "scripts/x-filter/php/update_checker.php";
 	$updates = array("core_update" => $core_update,
 	                 "web_update" => $web_update,
 	                 "FTL_update" => $FTL_update);
@@ -107,7 +107,7 @@ elseif (isset($_GET['list']))
 		// Set POST parameters and invoke script to add domain to list
 		$_POST['domain'] = $_GET['add'];
 		$_POST['list'] = $_GET['list'];
-		require("scripts/pi-hole/php/add.php");
+		require("scripts/x-filter/php/add.php");
 	}
 	elseif (isset($_GET['sub']))
 	{
@@ -117,11 +117,11 @@ elseif (isset($_GET['list']))
 		// Set POST parameters and invoke script to remove domain from list
 		$_POST['domain'] = $_GET['sub'];
 		$_POST['list'] = $_GET['list'];
-		require("scripts/pi-hole/php/sub.php");
+		require("scripts/x-filter/php/sub.php");
 	}
 	else
 	{
-		require("scripts/pi-hole/php/get.php");
+		require("scripts/x-filter/php/get.php");
 	}
 
 	return;

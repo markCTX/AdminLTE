@@ -6,8 +6,8 @@ Please read and understand the contribution guide before creating an issue or pu
 
 ## Etiquette
 
-- Our goal for Pi-hole is **stability before features**.  This means we focus on squashing critical bugs before adding new features.  Often, we can do both in tandem, but bugs will take priority over a new feature.
-- Pi-hole is open source and [powered by donations](https://pi-hole.net/donate/), and as such, we give our **free time** to build, maintain, and **provide user support** for this project.  It would be extremely unfair for us to suffer abuse or anger for our hard work, so please take a moment to consider that.
+- Our goal for X-filter is **stability before features**.  This means we focus on squashing critical bugs before adding new features.  Often, we can do both in tandem, but bugs will take priority over a new feature.
+- X-filter is open source and [powered by donations](https://x-filter.net/donate/), and as such, we give our **free time** to build, maintain, and **provide user support** for this project.  It would be extremely unfair for us to suffer abuse or anger for our hard work, so please take a moment to consider that.
 - Please be considerate towards the developers and other users when raising issues or presenting pull requests.
 - Respect our decision(s), and do not be upset or abusive if your submission is not used.
 
@@ -34,5 +34,5 @@ When requesting or submitting new features, first consider whether it might be u
 - Submit Pull Requests to the **devel branch only**.
 - Before Submitting your Pull Request, merge `devel` with your new branch and fix any conflicts. (Make sure you don't break anything in development!)
 - Commit Unix line endings.
-- Please use the Pi-hole brand: **Pi-hole** (Take a special look at the capitalized 'P' and a low 'h' with a hyphen)
-- (Optional fun) keep to the theme of Star Trek/black holes/gravity.
+- Please use the X-filter brand: **X-filter** (Take a special look at the capitalized 'P' and a low 'h' with a hyphen)
+- (Optional fun) keep to the theme of Star Trek/filters/gravity.

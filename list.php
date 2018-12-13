@@ -1,17 +1,17 @@
 <?php /*
-*    Pi-hole: A black hole for Internet advertisements
-*    (c) 2017 Pi-hole, LLC (https://pi-hole.net)
+*    X-filter: A filter for Internet advertisements
+*    (c) 2017 X-filter, LLC (https://x-filter.net)
 *    Network-wide ad blocking via your own hardware.
 *
 *    This file is copyright under the latest version of the EUPL.
 *    Please see LICENSE file for your rights under this license. */
-    require "scripts/pi-hole/php/header.php";
+    require "scripts/x-filter/php/header.php";
 
 $list = $_GET['l'];
 
 if($list !== "white" && $list !== "black"){
     echo "Invalid list parameter";
-    require "scripts/pi-hole/php/footer.php";
+    require "scripts/x-filter/php/footer.php";
     die();
 }
 
@@ -71,12 +71,12 @@ function getFullName() {
 <?php } ?>
 <ul class="list-group" id="list"></ul>
 <?php if($list === "black") { ?>
-<h3><a href="https://docs.pi-hole.net/ftldns/regex/overview/" target="_blank" title="Click for Pi-hole Regex documentation">Regex</a> &amp; Wildcard blocking</h3>
+<h3><a href="https://docs.x-filter.net/ftldns/regex/overview/" target="_blank" title="Click for X-filter Regex documentation">Regex</a> &amp; Wildcard blocking</h3>
 <ul class="list-group" id="list-regex"></ul>
 <?php } ?>
 
 <?php
-require "scripts/pi-hole/php/footer.php";
+require "scripts/x-filter/php/footer.php";
 ?>
 
-<script src="scripts/pi-hole/js/list.js"></script>
+<script src="scripts/x-filter/js/list.js"></script>

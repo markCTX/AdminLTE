@@ -1,11 +1,11 @@
 <?php /*
-*    Pi-hole: A black hole for Internet advertisements
-*    (c) 2017 Pi-hole, LLC (https://pi-hole.net)
+*    X-filter: A filter for Internet advertisements
+*    (c) 2017 X-filter, LLC (https://x-filter.net)
 *    Network-wide ad blocking via your own hardware.
 *
 *    This file is copyright under the latest version of the EUPL.
 *    Please see LICENSE file for your rights under this license. */
-    require "scripts/pi-hole/php/header.php";
+    require "scripts/x-filter/php/header.php";
 
     if(strlen($pwhash) > 0)
     {
@@ -24,15 +24,15 @@
     <h4>Top left: Status display</h4>
     <p>Shows different status messages:</p>
     <ul>
-        <li>Status: Current status of the Pi-hole - Active (<i class="fa fa-circle" style="color:#7FFF00"></i>), Offline (<i class="fa fa-circle" style="color:#FF0000"></i>), or Starting (<i class="fa fa-circle" style="color:#ff9900"></i>)</li>
+        <li>Status: Current status of the X-filter - Active (<i class="fa fa-circle" style="color:#7FFF00"></i>), Offline (<i class="fa fa-circle" style="color:#FF0000"></i>), or Starting (<i class="fa fa-circle" style="color:#ff9900"></i>)</li>
         <li>Temp: Current CPU temperature</li>
         <li>Load: load averages for the last minute, 5 minutes and 15 minutes, respectively. A load average of 1 reflects the full workload of a single processor on the system. We show a red icon if the current load exceeds the number of available processors on this machine (which is <?php echo $nproc; ?>)</li>
         <li>Memory usage: Shows the percentage of memory actually blocked by applications. We show a red icon if the memory usage exceeds 75%</li>
     </ul>
     <h4>Top right: About</h4>
     <ul>
-        <li>GitHub: Link to the Pi-hole repository</li>
-        <li>Details: Link to Jacob Salmela's blog with some more details, describing also the concept of the Pi-hole</li>
+        <li>GitHub: Link to the X-filter repository</li>
+        <li>Details: Link to Jacob Salmela's blog with some more details, describing also the concept of the X-filter</li>
         <li>Updates: Link to list of releases</li>
         <li>Update notifications: If updates are available, a link will be shown here.</li>
         <?php if($authenticationsystem){ ?>
@@ -44,7 +44,7 @@
 <div class="row">
     <div class="col-md-12">
     <h2>Dashboard</h2>
-    <p>On the dashboard, you can see various Pi-hole statistics:</p>
+    <p>On the dashboard, you can see various X-filter statistics:</p>
     <ul>
         <li>Summary: A summary of statistics showing how many total DNS queries have been blocked today, what percentage of DNS queries have been blocked, and how many domains are in the compiled ad list. This summary is updated every 10 seconds.</li>
         <li>Queries over time: Graph showing DNS queries (total and blocked) over 10 minute time intervals. More information can be acquired by hovering over the lines. This graph is updated every 10 minutes.</li>
@@ -63,21 +63,21 @@
 <div class="row">
     <div class="col-md-12">
     <h2>Query Log</h2>
-    <p>Shows the recent queries by parsing Pi-hole's log. It is possible to search through the whole list by using the "Search" input field. If the status is reported as "OK", then the DNS request has been permitted. Otherwise ("Pi-holed") it has been blocked. By clicking on the buttons under "Action" the corresponding domains can quickly be added to the white-/blacklist. The status of the action will be reported on this page. By default, only the recent 10 minutes are shown to enhance the loading speed of the query log page. All domains can be requested by clicking on the corresponding link in the header of the page. Note that the result heavily depends on your privacy settings (see Settings page).</p>
+    <p>Shows the recent queries by parsing X-filter's log. It is possible to search through the whole list by using the "Search" input field. If the status is reported as "OK", then the DNS request has been permitted. Otherwise ("X-filterd") it has been blocked. By clicking on the buttons under "Action" the corresponding domains can quickly be added to the white-/blacklist. The status of the action will be reported on this page. By default, only the recent 10 minutes are shown to enhance the loading speed of the query log page. All domains can be requested by clicking on the corresponding link in the header of the page. Note that the result heavily depends on your privacy settings (see Settings page).</p>
     </div>
 </div>
 <div class="row">
     <div class="col-md-12">
     <h2>White- / Blacklist</h2>
     <p>Add or remove domains (or subdomains) from the white-/blacklist. If a domain is added to e.g. the whitelist, any possible entry of the same domain will be automatically removed from the blacklist and vice versa.</p>
-    <p>Regex blacklisting is supported (entering <samp>^example</samp> will block any domain starting with <samp>example</samp>, see also our <a href="https://docs.pi-hole.net/ftldns/regex/" target="_blank">Regex documentation</a>). You can still whitelist specific domains even if they fall under a regex pattern.</p>
+    <p>Regex blacklisting is supported (entering <samp>^example</samp> will block any domain starting with <samp>example</samp>, see also our <a href="https://docs.x-filter.net/ftldns/regex/" target="_blank">Regex documentation</a>). You can still whitelist specific domains even if they fall under a regex pattern.</p>
     <p>You can white-/blacklist multiple entries at a time if you separate the domains by spaces.</p>
     </div>
 </div>
 <div class="row">
     <div class="col-md-12">
     <h2>Disable / Enable</h2>
-    Disables/enables Pi-hole blocking completely. You may have to wait a few minutes for the changes to reach all of your devices. The change will be reflected by a changed status (top left)
+    Disables/enables X-filter blocking completely. You may have to wait a few minutes for the changes to reach all of your devices. The change will be reflected by a changed status (top left)
     </div>
 </div>
 <div class="row">
@@ -94,34 +94,34 @@
 </div>
 <div class="row">
     <div class="col-md-12">
-    <h2>Tools &rarr; Tail pihole.log</h2>
-    Live tailing of the raw Pi-hole log.</p>
+    <h2>Tools &rarr; Tail xfilter.log</h2>
+    Live tailing of the raw X-filter log.</p>
     </div>
 </div>
 <div class="row">
     <div class="col-md-12">
     <h2>Settings</h2>
-    Change settings for the Pi-hole
+    Change settings for the X-filter
     <h4>System</h4>
-    Displays network and other system information of Pi-hole. At the bottom there is a "Danger Zone" with actions such as disable query logging and reboot.
+    Displays network and other system information of X-filter. At the bottom there is a "Danger Zone" with actions such as disable query logging and reboot.
     <h4>Blocklists</h4>
     View and edit the blocklists sourced for blocked domains.
     <h4>DNS</h4>
     Customize used upstream DNS servers + advanced settings for DNS servers. Note that any number of DNS servers may be enabled at a time.
     <h4>DHCP</h4>
-    Using this setting you can enable/disable the DHCP server of the Pi-hole. Note that you should disable any other DHCP server on your network to avoid IP addresses being used more than once. You have to give the range of IPs that DHCP will serve and the IP of the local router (gateway). If the DHCP server is active, the current leases are shown on the settings page. IPv4 DHCP will always be activated, IPv6 (stateless + statefull) can be enabled.
+    Using this setting you can enable/disable the DHCP server of the X-filter. Note that you should disable any other DHCP server on your network to avoid IP addresses being used more than once. You have to give the range of IPs that DHCP will serve and the IP of the local router (gateway). If the DHCP server is active, the current leases are shown on the settings page. IPv4 DHCP will always be activated, IPv6 (stateless + statefull) can be enabled.
     <h4>API / Web Interface</h4>
     Change settings which apply to the API as well as the web interface
     <h4>Privacy</h4>
     Set the privacy level for queries. Note that decreasing the privacy level will not disclose previously hidden query data.
     <h4>Teleporter</h4>
-    Import and export Pi-hole settings.
+    Import and export X-filter settings.
     </div>
 </div>
 <div class="row">
     <div class="col-md-12">
     <h2>Authentication system (currently <?php if($authenticationsystem) { ?>enabled<?php } else { ?>disabled<?php } ?>)</h2>
-    <p>Using the command<pre>sudo pihole -a -p</pre> and entering a password to be set, one can enable the authentication system of this web interface. Thereafter, a login is required for most pages (the dashboard will show a limited amount of statistics). Note that the authentication system may be disabled again, by setting an empty password using the command shown above. The Help center will show more details concerning the authentication system only if it is enabled</p>
+    <p>Using the command<pre>sudo xfilter -a -p</pre> and entering a password to be set, one can enable the authentication system of this web interface. Thereafter, a login is required for most pages (the dashboard will show a limited amount of statistics). Note that the authentication system may be disabled again, by setting an empty password using the command shown above. The Help center will show more details concerning the authentication system only if it is enabled</p>
     </div>
 </div>
 <?php if($authenticationsystem) { ?>
@@ -135,7 +135,7 @@
 <div class="row">
     <div class="col-md-12">
     <h2>Donate</h2>
-    Keep in mind that Pi-hole is free. If you like Pi-hole, please consider a small donation to help support its development
+    Keep in mind that X-filter is free. If you like X-filter, please consider a small donation to help support its development
     </div>
 </div>
 <div class="row">
@@ -147,10 +147,10 @@
 <div class="row">
     <div class="col-md-12">
     <h2>Footer</h2>
-    Shows the currently installed Pi-hole and Web Interface version. If an update is available, this will be indicated here
+    Shows the currently installed X-filter and Web Interface version. If an update is available, this will be indicated here
     </div>
 </div>
 
 <?php
-    require "scripts/pi-hole/php/footer.php";
+    require "scripts/x-filter/php/footer.php";
 ?>

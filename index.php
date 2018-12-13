@@ -1,20 +1,20 @@
 <?php /*
-*    Pi-hole: A black hole for Internet advertisements
-*    (c) 2017 Pi-hole, LLC (https://pi-hole.net)
+*    X-filter: A filter for Internet advertisements
+*    (c) 2017 X-filter, LLC (https://x-filter.net)
 *    Network-wide ad blocking via your own hardware.
 *
 *    This file is copyright under the latest version of the EUPL.
 *    Please see LICENSE file for your rights under this license. */
     $indexpage = true;
-    require "scripts/pi-hole/php/header.php";
-    require_once("scripts/pi-hole/php/gravity.php");
+    require "scripts/x-filter/php/header.php";
+    require_once("scripts/x-filter/php/gravity.php");
 
     function getinterval()
     {
-        global $piholeFTLConf;
-        if(isset($piholeFTLConf["MAXLOGAGE"]))
+        global $xfilterFTLConf;
+        if(isset($xfilterFTLConf["MAXLOGAGE"]))
         {
-             return round(floatval($piholeFTLConf["MAXLOGAGE"]), 1);
+             return round(floatval($xfilterFTLConf["MAXLOGAGE"]), 1);
         }
         else
         {
@@ -349,7 +349,7 @@ else
 <!-- /.row -->
 <?php } ?>
 <?php
-    require "scripts/pi-hole/php/footer.php";
+    require "scripts/x-filter/php/footer.php";
 ?>
 
-<script src="scripts/pi-hole/js/index.js"></script>
+<script src="scripts/x-filter/js/index.js"></script>

@@ -1,11 +1,11 @@
 <?php /*
-*    Pi-hole: A black hole for Internet advertisements
-*    (c) 2017 Pi-hole, LLC (https://pi-hole.net)
+*    X-filter: A filter for Internet advertisements
+*    (c) 2017 X-filter, LLC (https://x-filter.net)
 *    Network-wide ad blocking via your own hardware.
 *
 *    This file is copyright under the latest version of the EUPL.
 *    Please see LICENSE file for your rights under this license. */
-    require "scripts/pi-hole/php/header.php";
+    require "scripts/x-filter/php/header.php";
 
 // Generate CSRF token
 if(empty($_SESSION['token'])) {
@@ -44,7 +44,7 @@ else
 $showall = false;
 if(isset($_GET["all"]))
 {
-	$showing .= " all queries within the Pi-hole log";
+	$showing .= " all queries within the X-filter log";
 }
 else if(isset($_GET["client"]))
 {
@@ -166,8 +166,8 @@ if(strlen($showing) > 0)
 <!-- /.row -->
 
 <?php
-    require "scripts/pi-hole/php/footer.php";
+    require "scripts/x-filter/php/footer.php";
 ?>
 
 <script src="scripts/vendor/moment.min.js"></script>
-<script src="scripts/pi-hole/js/queries.js"></script>
+<script src="scripts/x-filter/js/queries.js"></script>

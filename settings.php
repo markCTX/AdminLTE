@@ -1,21 +1,21 @@
 <?php /*
-*    Pi-hole: A black hole for Internet advertisements
-*    (c) 2017 Pi-hole, LLC (https://pi-hole.net)
+*    X-filter: A filter for Internet advertisements
+*    (c) 2017 X-filter, LLC (https://x-filter.net)
 *    Network-wide ad blocking via your own hardware.
 *
 *    This file is copyright under the latest version of the EUPL.
 *    Please see LICENSE file for your rights under this license. */
-require "scripts/pi-hole/php/header.php";
-require "scripts/pi-hole/php/savesettings.php";
+require "scripts/x-filter/php/header.php";
+require "scripts/x-filter/php/savesettings.php";
 // Reread ini file as things might have been changed
-$setupVars = parse_ini_file("/etc/pihole/setupVars.conf");
-if(is_readable($piholeFTLConfFile))
+$setupVars = parse_ini_file("/etc/xfilter/setupVars.conf");
+if(is_readable($xfilterFTLConfFile))
 {
-	$piholeFTLConf = parse_ini_file($piholeFTLConfFile);
+	$xfilterFTLConf = parse_ini_file($xfilterFTLConfFile);
 }
 else
 {
-	$piholeFTLConf = array();
+	$xfilterFTLConf = array();
 }
 
 // Handling of PHP internal errors
@@ -72,20 +72,20 @@ if (isset($_POST["submit"])) {
 
 <?php
 // Networking
-if (isset($setupVars["PIHOLE_INTERFACE"])) {
-    $piHoleInterface = $setupVars["PIHOLE_INTERFACE"];
+if (isset($setupVars["XFILTER_INTERFACE"])) {
+    $xFilterInterface = $setupVars["XFILTER_INTERFACE"];
 } else {
-    $piHoleInterface = "unknown";
+    $xFilterInterface = "unknown";
 }
 if (isset($setupVars["IPV4_ADDRESS"])) {
-    $piHoleIPv4 = $setupVars["IPV4_ADDRESS"];
+    $xFilterIPv4 = $setupVars["IPV4_ADDRESS"];
 } else {
-    $piHoleIPv4 = "unknown";
+    $xFilterIPv4 = "unknown";
 }
 $IPv6connectivity = false;
 if (isset($setupVars["IPV6_ADDRESS"])) {
-    $piHoleIPv6 = $setupVars["IPV6_ADDRESS"];
-    sscanf($piHoleIPv6, "%2[0-9a-f]", $hexstr);
+    $xFilterIPv6 = $setupVars["IPV6_ADDRESS"];
+    sscanf($xFilterIPv6, "%2[0-9a-f]", $hexstr);
     if (strlen($hexstr) == 2) {
         // Convert HEX string to number
         $hex = hexdec($hexstr);
@@ -99,7 +99,7 @@ if (isset($setupVars["IPV6_ADDRESS"])) {
         }
     }
 } else {
-    $piHoleIPv6 = "unknown";
+    $xFilterIPv6 = "unknown";
 }
 $hostname = trim(file_get_contents("/etc/hostname"), "\x00..\x1F");
 ?>
@@ -110,20 +110,20 @@ $DNSservers = [];
 $DNSactive = [];
 
 $i = 1;
-while (isset($setupVars["PIHOLE_DNS_" . $i])) {
-    if (isinserverlist($setupVars["PIHOLE_DNS_" . $i])) {
-        array_push($DNSactive, $setupVars["PIHOLE_DNS_" . $i]);
-    } elseif (strpos($setupVars["PIHOLE_DNS_" . $i], ".") !== false) {
+while (isset($setupVars["XFILTER_DNS_" . $i])) {
+    if (isinserverlist($setupVars["XFILTER_DNS_" . $i])) {
+        array_push($DNSactive, $setupVars["XFILTER_DNS_" . $i]);
+    } elseif (strpos($setupVars["XFILTER_DNS_" . $i], ".") !== false) {
         if (!isset($custom1)) {
-            $custom1 = $setupVars["PIHOLE_DNS_" . $i];
+            $custom1 = $setupVars["XFILTER_DNS_" . $i];
         } else {
-            $custom2 = $setupVars["PIHOLE_DNS_" . $i];
+            $custom2 = $setupVars["XFILTER_DNS_" . $i];
         }
-    } elseif (strpos($setupVars["PIHOLE_DNS_" . $i], ":") !== false) {
+    } elseif (strpos($setupVars["XFILTER_DNS_" . $i], ":") !== false) {
         if (!isset($custom3)) {
-            $custom3 = $setupVars["PIHOLE_DNS_" . $i];
+            $custom3 = $setupVars["XFILTER_DNS_" . $i];
         } else {
-            $custom4 = $setupVars["PIHOLE_DNS_" . $i];
+            $custom4 = $setupVars["XFILTER_DNS_" . $i];
         }
     }
     $i++;
@@ -183,12 +183,12 @@ if (isset($setupVars["CONDITIONAL_FORWARDING"]) && ($setupVars["CONDITIONAL_FORW
 // Query logging
 if (isset($setupVars["QUERY_LOGGING"])) {
     if ($setupVars["QUERY_LOGGING"] == 1) {
-        $piHoleLogging = true;
+        $xFilterLogging = true;
     } else {
-        $piHoleLogging = false;
+        $xFilterLogging = false;
     }
 } else {
-    $piHoleLogging = true;
+    $xFilterLogging = true;
 }
 ?>
 
@@ -224,7 +224,7 @@ if (isset($setupVars["API_PRIVACY_MODE"])) {
 ?>
 
 <?php
-if (isset($_GET['tab']) && in_array($_GET['tab'], array("sysadmin", "blocklists", "dns", "piholedhcp", "api", "privacy", "teleporter"))) {
+if (isset($_GET['tab']) && in_array($_GET['tab'], array("sysadmin", "blocklists", "dns", "xfilterdhcp", "api", "privacy", "teleporter"))) {
     $tab = $_GET['tab'];
 } else {
     $tab = "sysadmin";
@@ -237,7 +237,7 @@ if (isset($_GET['tab']) && in_array($_GET['tab'], array("sysadmin", "blocklists"
                 <li<?php if($tab === "sysadmin"){ ?> class="active"<?php } ?>><a data-toggle="tab" href="#sysadmin">System</a></li>
                 <li<?php if($tab === "blocklists"){ ?> class="active"<?php } ?>><a data-toggle="tab" href="#blocklists">Blocklists</a></li>
                 <li<?php if($tab === "dns"){ ?> class="active"<?php } ?>><a data-toggle="tab" href="#dns">DNS</a></li>
-                <li<?php if($tab === "piholedhcp"){ ?> class="active"<?php } ?>><a data-toggle="tab" href="#piholedhcp">DHCP</a></li>
+                <li<?php if($tab === "xfilterdhcp"){ ?> class="active"<?php } ?>><a data-toggle="tab" href="#xfilterdhcp">DHCP</a></li>
                 <li<?php if($tab === "api"){ ?> class="active"<?php } ?>><a data-toggle="tab" href="#api">API / Web interface</a></li>
                 <li<?php if($tab === "privacy"){ ?> class="active"<?php } ?>><a data-toggle="tab" href="#privacy">Privacy</a></li>
                 <li<?php if($tab === "teleporter"){ ?> class="active"<?php } ?>><a data-toggle="tab" href="#teleporter">Teleporter</a></li>
@@ -250,7 +250,7 @@ if (isset($_GET['tab']) && in_array($_GET['tab'], array("sysadmin", "blocklists"
                             <div class="col-md-12">
                                 <div class="box">
                                     <div class="box-header with-border">
-                                        <h3 class="box-title">Blocklists used to generate Pi-hole's Gravity: <?php echo count($adlist); ?></h3>
+                                        <h3 class="box-title">Blocklists used to generate X-filter's Gravity: <?php echo count($adlist); ?></h3>
                                     </div>
                                     <div class="box-body">
                                         <div class="table-responsive">
@@ -299,9 +299,9 @@ if (isset($_GET['tab']) && in_array($_GET['tab'], array("sysadmin", "blocklists"
                     </form>
                 </div>
                 <!-- ######################################################### DHCP ######################################################### -->
-                <div id="piholedhcp" class="tab-pane fade<?php if($tab === "piholedhcp"){ ?> in active<?php } ?>">
+                <div id="xfilterdhcp" class="tab-pane fade<?php if($tab === "xfilterdhcp"){ ?> in active<?php } ?>">
                     <?php
-                    // Pi-hole DHCP server
+                    // X-filter DHCP server
                     if (isset($setupVars["DHCP_ACTIVE"])) {
                         if ($setupVars["DHCP_ACTIVE"] == 1) {
                             $DHCP = true;
@@ -344,8 +344,8 @@ if (isset($_GET['tab']) && in_array($_GET['tab'], array("sysadmin", "blocklists"
                     } else {
                         $DHCP = false;
                         // Try to guess initial settings
-                        if ($piHoleIPv4 !== "unknown") {
-                            $DHCPdomain = explode(".", $piHoleIPv4);
+                        if ($xFilterIPv4 !== "unknown") {
+                            $DHCPdomain = explode(".", $xFilterIPv4);
                             $DHCPstart = $DHCPdomain[0] . "." . $DHCPdomain[1] . "." . $DHCPdomain[2] . ".201";
                             $DHCPend = $DHCPdomain[0] . "." . $DHCPdomain[1] . "." . $DHCPdomain[2] . ".251";
                             $DHCProuter = $DHCPdomain[0] . "." . $DHCPdomain[1] . "." . $DHCPdomain[2] . ".1";
@@ -357,10 +357,10 @@ if (isset($_GET['tab']) && in_array($_GET['tab'], array("sysadmin", "blocklists"
                         $DHCPleasetime = 24;
                         $DHCPIPv6 = false;
                     }
-                    if (isset($setupVars["PIHOLE_DOMAIN"])) {
-                        $piHoleDomain = $setupVars["PIHOLE_DOMAIN"];
+                    if (isset($setupVars["XFILTER_DOMAIN"])) {
+                        $xFilterDomain = $setupVars["XFILTER_DOMAIN"];
                     } else {
-                        $piHoleDomain = "lan";
+                        $xFilterDomain = "lan";
                     }
                     ?>
                     <form role="form" method="post">
@@ -382,7 +382,7 @@ if (isset($_GET['tab']) && in_array($_GET['tab'], array("sysadmin", "blocklists"
                                                     </div>
                                                 </div>
                                                 <p id="dhcpnotice" <?php if (!$DHCP){ ?>hidden<?php }
-                                                                   ?>>Make sure your router's DHCP server is disabled when using the Pi-hole DHCP server!</p>
+                                                                   ?>>Make sure your router's DHCP server is disabled when using the X-filter DHCP server!</p>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -438,12 +438,12 @@ if (isset($_GET['tab']) && in_array($_GET['tab'], array("sysadmin", "blocklists"
                                     <div class="box-body">
                                         <div class="row">
                                             <div class="col-md-12">
-                                                <label>Pi-hole domain name</label>
+                                                <label>X-filter domain name</label>
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <div class="input-group-addon">Domain</div>
                                                         <input type="text" class="form-control DHCPgroup" name="domain"
-                                                               value="<?php echo $piHoleDomain; ?>"
+                                                               value="<?php echo $xFilterDomain; ?>"
                                                                <?php if (!$DHCP){ ?>disabled<?php } ?>>
                                                     </div>
                                                 </div>
@@ -489,7 +489,7 @@ if (isset($_GET['tab']) && in_array($_GET['tab'], array("sysadmin", "blocklists"
                             if ($DHCP) {
                                 // Read leases file
                                 $leasesfile = true;
-                                $dhcpleases = @fopen('/etc/pihole/dhcp.leases', 'r');
+                                $dhcpleases = @fopen('/etc/xfilter/dhcp.leases', 'r');
                                 if (!is_resource($dhcpleases))
                                     $leasesfile = false;
 
@@ -777,7 +777,7 @@ if (isset($_GET['tab']) && in_array($_GET['tab'], array("sysadmin", "blocklists"
                                                     <div class="radio">
                                                         <label><input type="radio" name="DNSinterface" value="single"
                                                                       <?php if ($DNSinterface == "single"){ ?>checked<?php } ?>>
-                                                               <strong>Listen only on interface <?php echo $piHoleInterface; ?></strong>
+                                                               <strong>Listen only on interface <?php echo $xFilterInterface; ?></strong>
                                                         </label>
                                                     </div>
                                                     <div class="radio">
@@ -789,9 +789,9 @@ if (isset($_GET['tab']) && in_array($_GET['tab'], array("sysadmin", "blocklists"
                                                 </div>
                                                 <p>Note that the last option should not be used on devices which are
                                                    directly connected to the Internet. This option is safe if your
-                                                   Pi-hole is located within your local network, i.e. protected behind
+                                                   X-filter is located within your local network, i.e. protected behind
                                                    your router, and you have not forwarded port 53 to this device. In
-                                                   virtually all other cases you have to make sure that your Pi-hole is
+                                                   virtually all other cases you have to make sure that your X-filter is
                                                    properly firewalled.</p>
                                             </div>
                                         </div>
@@ -824,7 +824,7 @@ if (isset($_GET['tab']) && in_array($_GET['tab'], array("sysadmin", "blocklists"
                                                 </div>
                                                 <p>Note that enabling these two options may increase your privacy
                                                    slightly, but may also prevent you from being able to access
-                                                   local hostnames if the Pi-hole is not used as DHCP server</p>
+                                                   local hostnames if the X-filter is not used as DHCP server</p>
                                                 <div class="form-group">
                                                     <div class="checkbox">
                                                         <label><input type="checkbox" name="DNSSEC"
@@ -833,7 +833,7 @@ if (isset($_GET['tab']) && in_array($_GET['tab'], array("sysadmin", "blocklists"
                                                     </div>
                                                 </div>
                                                 <p>Validate DNS replies and cache DNSSEC data. When forwarding DNS
-                                                   queries, Pi-hole requests the DNSSEC records needed to validate
+                                                   queries, X-filter requests the DNSSEC records needed to validate
                                                    the replies. If a domain fails validation or the upstream does not
                                                    support DNSSEC, this setting can cause issues resolving domains.
                                                    Use Google, Cloudflare, DNS.WATCH, Quad9, or another DNS
@@ -842,10 +842,10 @@ if (isset($_GET['tab']) && in_array($_GET['tab'], array("sysadmin", "blocklists"
                                                    when enabling DNSSEC. A DNSSEC resolver test can be found
                                                    <a href="http://dnssec.vs.uni-due.de/" target="_blank">here</a>.</p>
                                                 <label>Conditional Forwarding</label>
-                                                <p>If not configured as your DHCP server, Pi-hole won't able to
+                                                <p>If not configured as your DHCP server, X-filter won't able to
                                                    determine the names of devices on your local network.  As a
                                                    result, tables such as Top Clients will only show IP addresses.</p>
-                                                <p>One solution for this is to configure Pi-hole to forward these
+                                                <p>One solution for this is to configure X-filter to forward these
 	                                                 requests to your home router, but only for devices on your
 	                                                 home network.  To configure this we will need to know the IP
 	                                                 address of your router and the name of your local network.</p>
@@ -1023,9 +1023,9 @@ if (isset($_GET['tab']) && in_array($_GET['tab'], array("sysadmin", "blocklists"
                 </div>
                 <!-- ######################################################### Privacy (may be expanded further later on) ######################################################### -->
                 <?php
-                // Get privacy level from piholeFTL config array
-                if (isset($piholeFTLConf["PRIVACYLEVEL"])) {
-                    $privacylevel = intval($piholeFTLConf["PRIVACYLEVEL"]);
+                // Get privacy level from xfilterFTL config array
+                if (isset($xfilterFTLConf["PRIVACYLEVEL"])) {
+                    $privacylevel = intval($xfilterFTLConf["PRIVACYLEVEL"]);
                 } else {
                     $privacylevel = 0;
                 }
@@ -1067,12 +1067,12 @@ if (isset($_GET['tab']) && in_array($_GET['tab'], array("sysadmin", "blocklists"
                                                     <div class="radio">
                                                         <label><input type="radio" name="privacylevel" value="4"
                                                                       <?php if ($privacylevel === 4){ ?>checked<?php }
-                                                            ?>>No Statistics mode: This disables all statistics processing. Even the query counters will not be available.<br><strong>Note that regex blocking is not available when query analyzing is disabled.</strong><br>Additionally, you can disable logging to the file <code>/var/log/pihole.log</code> using <code>sudo pihole logging off</code>.</label>
+                                                            ?>>No Statistics mode: This disables all statistics processing. Even the query counters will not be available.<br><strong>Note that regex blocking is not available when query analyzing is disabled.</strong><br>Additionally, you can disable logging to the file <code>/var/log/xfilter.log</code> using <code>sudo xfilter logging off</code>.</label>
                                                     </div>
                                                 </div>
                                                 <p>The privacy level may be increased at any time without having to restart the DNS resolver. However, note that the DNS resolver needs to be restarted when lowering the privacy level. This restarting is automatically done when saving.</p>
-                                                <?php if($privacylevel > 0 && $piHoleLogging){ ?>
-                                                <p class="lookatme">Warning: Pi-hole's query logging is activated. Although the dashboard will hide the requested details, all queries are still fully logged to the pihole.log file.</p>
+                                                <?php if($privacylevel > 0 && $xFilterLogging){ ?>
+                                                <p class="lookatme">Warning: X-filter's query logging is activated. Although the dashboard will hide the requested details, all queries are still fully logged to the xfilter.log file.</p>
                                                 <?php } ?>
                                             </div>
                                         </div>
@@ -1092,7 +1092,7 @@ if (isset($_GET['tab']) && in_array($_GET['tab'], array("sysadmin", "blocklists"
                     <div class="row">
                         <?php if (extension_loaded('Phar')) { ?>
                         <form role="form" method="post" id="takeoutform"
-                              action="scripts/pi-hole/php/teleporter.php"
+                              action="scripts/x-filter/php/teleporter.php"
                               target="_blank" enctype="multipart/form-data">
                             <input type="hidden" name="token" value="<?php echo $token ?>">
                             <div class="col-lg-6 col-md-12">
@@ -1103,7 +1103,7 @@ if (isset($_GET['tab']) && in_array($_GET['tab'], array("sysadmin", "blocklists"
                                     <div class="box-body">
                                         <div class="row">
                                             <div class="col-lg-12">
-                                                <p>Export your Pi-hole lists as downloadable archive</p>
+                                                <p>Export your X-filter lists as downloadable archive</p>
                                                 <button type="submit" class="btn btn-default">Export</button>
                                             </div>
                                         </div>
@@ -1146,7 +1146,7 @@ if (isset($_GET['tab']) && in_array($_GET['tab'], array("sysadmin", "blocklists"
                                                 <div class="form-group">
                                                     <label for="zip_file">File input</label>
                                                     <input type="file" name="zip_file" id="zip_file">
-                                                    <p class="help-block">Upload only Pi-hole backup files.</p>
+                                                    <p class="help-block">Upload only X-filter backup files.</p>
                                                     <button type="submit" class="btn btn-default" name="action"
                                                             value="in">Import
                                                     </button>
@@ -1164,7 +1164,7 @@ if (isset($_GET['tab']) && in_array($_GET['tab'], array("sysadmin", "blocklists"
                                     <h3 class="box-title">Teleporter</h3>
                                 </div>
                                 <div class="box-body">
-                                    <p>The PHP extension <code>Phar</code> is not loaded. Please ensure it is installed and loaded if you want to use the Pi-hole teleporter.</p>
+                                    <p>The PHP extension <code>Phar</code> is not loaded. Please ensure it is installed and loaded if you want to use the X-filter teleporter.</p>
                                 </div>
                             </div>
                         </div>
@@ -1185,19 +1185,19 @@ if (isset($_GET['tab']) && in_array($_GET['tab'], array("sysadmin", "blocklists"
                                             <table class="table table-striped table-bordered dt-responsive nowrap">
                                                 <tbody>
                                                 <tr>
-                                                    <th scope="row">Pi-hole Ethernet Interface:</th>
-                                                    <td><?php echo $piHoleInterface; ?></td>
+                                                    <th scope="row">X-filter Ethernet Interface:</th>
+                                                    <td><?php echo $xFilterInterface; ?></td>
                                                 </tr>
                                                 <tr>
-                                                    <th scope="row">Pi-hole IPv4 address:</th>
-                                                    <td><?php echo $piHoleIPv4; ?></td>
+                                                    <th scope="row">X-filter IPv4 address:</th>
+                                                    <td><?php echo $xFilterIPv4; ?></td>
                                                 </tr>
                                                 <tr>
-                                                    <th scope="row">Pi-hole IPv6 address:</th>
-                                                    <td><?php echo $piHoleIPv6; ?></td>
+                                                    <th scope="row">X-filter IPv6 address:</th>
+                                                    <td><?php echo $xFilterIPv6; ?></td>
                                                 </tr>
                                                 <tr>
-                                                    <th scope="row">Pi-hole hostname:</th>
+                                                    <th scope="row">X-filter hostname:</th>
                                                     <td><?php echo $hostname; ?></td>
                                                 </tr>
                                                 </tbody>
@@ -1223,7 +1223,7 @@ if (isset($_GET['tab']) && in_array($_GET['tab'], array("sysadmin", "blocklists"
                                                     return trim(exec("ps -p " . $FTLpid . " -o " . $arg));
                                                 }
 
-                                                $FTLversion = exec("/usr/bin/pihole-FTL version");
+                                                $FTLversion = exec("/usr/bin/xfilter-FTL version");
                                             ?>
                                             <table class="table table-striped table-bordered dt-responsive nowrap">
                                                 <tbody>
@@ -1277,7 +1277,7 @@ if (isset($_GET['tab']) && in_array($_GET['tab'], array("sysadmin", "blocklists"
                                                     </tr>
                                                 </tbody>
                                             </table>
-                                            See also our <a href="https://docs.pi-hole.net/ftldns/dns-cache/" target="_blank">DNS cache documentation</a>.
+                                            See also our <a href="https://docs.x-filter.net/ftldns/dns-cache/" target="_blank">DNS cache documentation</a>.
                                             <?php } else { ?>
                                             <div>The FTL service is offline!</div>
                                             <?php } ?>
@@ -1296,7 +1296,7 @@ if (isset($_GET['tab']) && in_array($_GET['tab'], array("sysadmin", "blocklists"
                                 <div class="box-body">
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <?php if ($piHoleLogging) { ?>
+                                            <?php if ($xFilterLogging) { ?>
                                                 <button type="button" class="btn btn-warning confirm-disablelogging-noflush form-control">Disable query logging</button>
                                             <?php } else { ?>
                                                 <form role="form" method="post">
@@ -1309,7 +1309,7 @@ if (isset($_GET['tab']) && in_array($_GET['tab'], array("sysadmin", "blocklists"
                                         </div>
                                         <p class="hidden-md hidden-lg"></p>
                                         <div class="col-md-4">
-                                            <?php if ($piHoleLogging) { ?>
+                                            <?php if ($xFilterLogging) { ?>
                                                 <button type="button" class="btn btn-danger confirm-disablelogging form-control">Disable query logging and flush logs</button>
                                             <?php } ?>
                                         </div>
@@ -1370,10 +1370,10 @@ if (isset($_GET['tab']) && in_array($_GET['tab'], array("sysadmin", "blocklists"
 </div>
 
 <?php
-require "scripts/pi-hole/php/footer.php";
+require "scripts/x-filter/php/footer.php";
 ?>
 
 <script src="scripts/vendor/jquery.inputmask.js"></script>
 <script src="scripts/vendor/jquery.inputmask.extensions.js"></script>
 <script src="scripts/vendor/jquery.confirm.min.js"></script>
-<script src="scripts/pi-hole/js/settings.js"></script>
+<script src="scripts/x-filter/js/settings.js"></script>

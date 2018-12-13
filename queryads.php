@@ -1,11 +1,11 @@
 <?php /* 
-*    Pi-hole: A black hole for Internet advertisements
-*    (c) 2017 Pi-hole, LLC (https://pi-hole.net)
+*    X-filter: A filter for Internet advertisements
+*    (c) 2017 X-filter, LLC (https://x-filter.net)
 *    Network-wide ad blocking via your own hardware.
 *
 *    This file is copyright under the latest version of the EUPL.
 *    Please see LICENSE file for your rights under this license. */
-    require "scripts/pi-hole/php/header.php";
+    require "scripts/x-filter/php/header.php";
 ?>
 <!-- Title -->
 <div class="page-header">
@@ -24,8 +24,8 @@
 <pre id="output" style="width: 100%; height: 100%;" hidden="true"></pre>
 
 <?php
-    require "scripts/pi-hole/php/footer.php";
+    require "scripts/x-filter/php/footer.php";
 ?>
 
 
-<script src="scripts/pi-hole/js/queryads.js"></script>
+<script src="scripts/x-filter/js/queryads.js"></script>

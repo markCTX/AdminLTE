@@ -2,7 +2,7 @@
 
 `{Please ensure that your pull request is for the 'devel' branch!}`
 
-- [] I have read and understood the [contributors guide](https://github.com/pi-hole/AdminLTE/blob/master/CONTRIBUTING.md), as well as this entire template.
+- [] I have read and understood the [contributors guide](https://github.com/x-filter/AdminLTE/blob/master/CONTRIBUTING.md), as well as this entire template.
 - [] I have made only one major change in my proposed changes.
 - [] I have commented my proposed changes within the code.
 - [] I have tested my proposed changes.
@@ -28,5 +28,5 @@
 
 > * `{Please delete this quoted section when opening your pull request}`
 > * You must follow the template instructions. Failure to do so will result in your issue being closed.
-> * Please respect that Pi-hole is developed by volunteers, who can only reply in their spare time.
+> * Please respect that X-filter is developed by volunteers, who can only reply in their spare time.
 > * Detail helps us understand an issue quicker, but please ensure it's relevant.
